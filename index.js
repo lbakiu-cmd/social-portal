@@ -1,10 +1,9 @@
 const express = require('express');
-// 1. IMPORT PrismaClient FIRST
-const { PrismaClient } = require('./generated/prisma/client');
+// Import from the root of the generated folder, not the inner client!
+const { PrismaClient } = require('./generated/prisma');
 
 const app = express();
 
-// 2. INITIALIZE it SECOND
 const prisma = new PrismaClient(); 
 const port = process.env.PORT || 3000;
 
