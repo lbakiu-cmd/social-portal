@@ -1,5 +1,10 @@
 const express = require('express');
+// 1. IMPORT PrismaClient FIRST
+const { PrismaClient } = require('./generated/prisma/client');
+
 const app = express();
+
+// 2. INITIALIZE it SECOND
 const prisma = new PrismaClient(); 
 const port = process.env.PORT || 3000;
 
@@ -20,4 +25,3 @@ app.get('/test-db', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
