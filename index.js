@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const prisma = new PrismaClient({
+  datasourceUrl: process.env.DATABASE_URL,
+});
+
 // Basic route to test the server
 app.get('/', (req, res) => {
   res.send('SaaS Backend is live!');
@@ -10,3 +14,4 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
