@@ -1,10 +1,26 @@
 const express = require('express');
-// Explicitly import the generated Prisma client
+const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+// 🛡️ LiteSpeed / Hostinger Self-Healing Script
+// Because Hostinger bypasses package.json, we force Prisma to build itself on the server if it is missing.
+const clientPath = path.join(__dirname, 'generated', 'prisma', 'client');
+
+if (!fs.existsSync(clientPath)) {
+  console.log('Prisma client missing on server. Compiling native engine now...');
+  try {
+    execSync('npx prisma generate', { stdio: 'inherit' });
+    console.log('Prisma generation successful!');
+  } catch (error) {
+    console.error('Failed to generate Prisma client:', error);
+  }
+}
+
+// Now we can safely import it, knowing it 100% exists
 const { PrismaClient } = require('./generated/prisma/client');
 
 const app = express();
-
-// Prisma 7 automatically picks up the DATABASE_URL from your environment
 const prisma = new PrismaClient(); 
 const port = process.env.PORT || 3000;
 
