@@ -1,0 +1,64 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  // This tells Windows to also download the Linux engines for Hostinger
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  // DO NOT put the url here anymore!
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  passwordHash   String?
+  name           String?
+  createdAt      DateTime        @default(now())
+  socialAccounts SocialAccount[]
+  blogPosts      BlogPost[]
+  messages       Message[]
+}
+
+model SocialAccount {
+  id           String    @id @default(uuid())
+  userId       String
+  platform     String
+  accountId    String
+  accessToken  String    @db.Text
+  refreshToken String?   @db.Text
+  expiresAt    DateTime?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages     Message[]
+
+  @@unique([userId, platform])
+}
+
+model BlogPost {
+  id             String    @id @default(uuid())
+  userId         String
+  title          String
+  content        String    @db.LongText
+  targetPlatform String
+  scheduledFor   DateTime?
+  status         String    @default("DRAFT")
+  publishedUrl   String?
+  createdAt      DateTime  @default(now())
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id              String        @id @default(uuid())
+  userId          String
+  socialAccountId String
+  senderName      String
+  senderAvatar    String?
+  content         String        @db.Text
+  platformMsgId   String
+  direction       String        @default("INBOUND")
+  isRead          Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  socialAccount   SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
+}

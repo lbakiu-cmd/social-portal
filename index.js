@@ -1,17 +1,24 @@
 const express = require('express');
+const { PrismaClient } = require('./generated/prisma/client');
+
 const app = express();
+const prisma = new PrismaClient(); 
 const port = process.env.PORT || 3000;
 
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-});
-
-// Basic route to test the server
 app.get('/', (req, res) => {
   res.send('SaaS Backend is live!');
+});
+
+app.get('/test-db', async (req, res) => {
+  try {
+    const userCount = await prisma.user.count();
+    res.json({ success: true, message: `Database connected! Total users: ${userCount}` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Database connection failed.' });
+  }
 });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
