@@ -1,7 +1,6 @@
 generator client {
   provider      = "prisma-client-js"
-  output        = "../generated/prisma"
-  // This tells Windows to also download the Linux engines for Hostinger
+ // This tells Windows to also download the Linux engines for Hostinger
   binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
