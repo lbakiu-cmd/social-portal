@@ -1,6 +1,6 @@
 const express = require('express');
 // Import from the root of the generated folder, not the inner client!
-const { PrismaClient } = require('./generated/prisma');
+const { PrismaClient } = require('@prisma/client');
 
 const app = express();
 
