@@ -2,15 +2,14 @@
   "name": "social-blog-saas",
   "version": "1.0.0",
   "main": "index.js",
- "scripts": {
+  "scripts": {
     "start": "node index.js",
     "postinstall": "prisma generate"
   },
-  
   "dependencies": {
-    "@prisma/client": "*",
+    "@prisma/client": "^6.19.3",
     "dotenv": "^17.4.2",
     "express": "*",
-    "prisma": "*"
+    "prisma": "^6.19.3"
   }
 }
